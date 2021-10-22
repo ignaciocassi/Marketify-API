@@ -2,13 +2,15 @@ package com.ignaciocassi.marketAPI.domain;
 
 public class Product {
 
+    //Clase de dominio.
+
     private int productId;
     private String name;
     private int categoryId;
-    private String barcode;
     private double price;
     private int stock;
     private boolean active;
+    private Category category;
 
     public int getProductId() {
         return productId;
@@ -34,14 +36,6 @@ public class Product {
         this.categoryId = categoryId;
     }
 
-    public String getBarcode() {
-        return barcode;
-    }
-
-    public void setBarcode(String barcode) {
-        this.barcode = barcode;
-    }
-
     public double getPrice() {
         return price;
     }
@@ -65,4 +59,13 @@ public class Product {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
 }

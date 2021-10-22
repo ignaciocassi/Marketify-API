@@ -2,6 +2,8 @@ package com.ignaciocassi.marketAPI.domain;
 
 public class Category {
 
+    //Clase de dominio.
+
     private Integer categoryId;
     private String category;
     private Boolean active;
