@@ -5,6 +5,7 @@ import com.ignaciocassi.marketAPI.domain.repository.ProductRepository;
 import com.ignaciocassi.marketAPI.persistence.crud.ProductoCrudRepository;
 import com.ignaciocassi.marketAPI.persistence.entities.Producto;
 import com.ignaciocassi.marketAPI.persistence.mapper.ProductMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,19 @@ public class ProductoRepository implements ProductRepository {
     //Usa el productoCrudRepository, el cual define el comportamiento personalizado, además del CRUD proveído
     //por el repository CrudRepository, del cual hereda.
     //Adicionalmente utiliza ProductMapper para convertir de Producto a Product y viceversa.
+
+    //Aplicando el principio de inyección de independencias, que permite el framework Spring, delegamos la instanciación
+    //De objetos al Framework. Por lo que no sera necesario ni recomendable hacerlo manualmente.
+
+    //Para usar autowired e inyectar la dependencia, debe ser un componente de spring.
+    //En este caso la clase ProductoCrudRepository es un componente porque extiende de CrudRepository que tiene
+    //La anotación "@NoRepositoryBean" que es un estereotipo de componente de spring.
+
+    @Autowired
+    //Indica a spring que este objeto sera instanciado por Spring automaticamente. Inyecc. Dep. Debe ser un componente.
     private ProductoCrudRepository productoCrudRepository;
+
+    @Autowired
     private ProductMapper mapper;
 
     @Override
