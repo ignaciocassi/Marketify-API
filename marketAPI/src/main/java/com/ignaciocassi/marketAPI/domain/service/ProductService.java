@@ -11,15 +11,23 @@ import java.util.Optional;
 //Component es más general, pero service tiene una diferenciación semántica, de que forma parte de la lógica de negocio.
 @Service
 public class ProductService {
-    //Actua como intermediario entre el controlador de la API y el repositorio.
 
-    @Autowired //Se llama directamente a la interfaz, es un componente por ProductoRepository, que la implementa.
+    //Servicio de dominio.
+    //Actua como intermediario entre el controlador de la API (Product) y el repositorio (Producto).
+    //Permite manipular el repositorio de Productos, utilizando términos del Dominio (Product).
+
+    //Inyecta la interface productRepository y su implementación (ProductoRepository) en la capa de persistencia.
+    //Efectivamente se instanciará un ProductoRepository
+    //Podemos usar @Autowired porque aunque productRepository no es un componente, su implementación si lo es.
+    @Autowired
     private ProductRepository productRepository;
 
+    //Devuelve todos los Product.
     public List<Product> getAll() {
         return productRepository.getAll();
     }
 
+    //Devuelve un Product si existe el Producto en la capa de Persitencia, para ello consulta el productRepository.
     public Optional<Product> getProduct(int productId) {
         return productRepository.getProduct(productId);
     }

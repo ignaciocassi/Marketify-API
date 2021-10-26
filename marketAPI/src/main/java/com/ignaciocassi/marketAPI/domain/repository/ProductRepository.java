@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public interface ProductRepository {
 
-    //Define las reglas que tiene el dominio al momento de que cualquier repositorio,
-    //quiere utilizar o acceder a produtos en la base datos (entities en la capa de persistencia).
+    //Especificación del repositorio.
+    //Define lo que las implementaciones del repositorio deberán hacer.
 
     List<Product> getAll();
 
