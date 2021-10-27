@@ -55,9 +55,10 @@ public class ProductoRepository implements ProductRepository {
 
     //Obtiene la lista de Productos escasos de la base de datos, y la convierte a lista de Product mediante mapper.
     @Override
-    public Optional<List<Product>> getScarceProducts(int quantity) {
-        Optional<List<Producto>> productos = productoCrudRepository.findByCantidadStockLessThanAndEstado(quantity,true);
-        return productos.map(prods -> mapper.toProducts(prods));
+    public Optional<List<Product>> getScarce(int quantity, boolean active) {
+        List<Producto> productos = productoCrudRepository.getScarce(quantity,true);
+        return Optional.of(mapper.toProducts(productos));
+        //return productos.map(prods -> mapper.toProducts(prods));
     }
 
     //Obtiene un Producto por productId de la base de datos lo convierte a Product mediante mapper y lo devuelve.

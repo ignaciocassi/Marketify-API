@@ -47,8 +47,8 @@ public class ProductService {
         }).orElse(false);
     }
 
-    public Optional<List<Product>> getScarceProducts(int quantity) {
-        return productRepository.getScarceProducts(quantity);
+    public Optional<List<Product>> getScarceProducts(int quantity, boolean active) {
+        return productRepository.getScarce(quantity,active);
     }
 
     public Optional<Product> getProductByName(String name) {

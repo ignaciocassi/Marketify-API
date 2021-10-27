@@ -1,6 +1,7 @@
 package com.ignaciocassi.marketAPI.persistence.crud;
 
 import com.ignaciocassi.marketAPI.persistence.entities.Producto;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 import java.util.Optional;
@@ -13,14 +14,11 @@ public interface ProductoCrudRepository extends CrudRepository<Producto, Integer
 
     List<Producto> findByIdCategoriaOrderByNombreAsc(Integer idCategoria);
 
-    Optional<List<Producto>> findByCantidadStockLessThanAndEstado(int cantidadStock, boolean estado);
-
     Optional<Producto> findByNombre(String nombre);
 
     void deleteByNombre(String nombre);
 
-    //También pueden usarse Querys nativos, usando SQL.
-    //@Query(value = "SELECT * FROM productos WHERE id_categoria = ?",nativeQuery = true)
-    //List<Producto> getByCategoria(Integer idCategoria);
+    @Query(value = "SELECT * FROM productos WHERE cantidad_stock < :quantity AND estado = :activo", nativeQuery = true)
+    List<Producto> getScarce(Integer quantity, Boolean activo);
 
 }

@@ -12,9 +12,6 @@ import java.util.List;
 //Indicamos que vamos a usar Category con su data Mapper dentro de ProductMapper.
 @Mapper(componentModel = "spring", uses = {CategoryMapper.class})
 public interface ProductMapper {
-
-    //Mapper toProduct Convierte (Producto -> Product)
-    //Define los mappings para todos los atributos de Product.
     @Mappings({
             @Mapping(source = "idProducto", target = "productId"),
             @Mapping(source = "nombre", target = "name"),
@@ -25,17 +22,9 @@ public interface ProductMapper {
             @Mapping(source = "categoria", target = "category"),
     })
     Product toProduct(Producto producto);
-    //Conversión en plural.
     List<Product> toProducts(List<Producto> productos);
 
-    //Mapper toProducto Convierte (Product -> Producto)
-    //Indica que la conversión es la inversa del mapping inferido.
-    //En el caso del Mapping del atributo codigoBarras en Producto, no queremos exponerlo en la API, por lo que no
-    //formará parte de Product (capa de dominio), será ignorado en la conversión.
     @InheritInverseConfiguration
     @Mapping(target = "codigoBarras", ignore = true)
     Producto toProducto(Product product);
-    //Conversión en plural.
-    List<Producto> toProductos(List<Product> products);
-
 }

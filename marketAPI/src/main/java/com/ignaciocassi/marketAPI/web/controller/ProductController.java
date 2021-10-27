@@ -70,8 +70,10 @@ public class ProductController {
     //Indica que este método respondera al path "productos/scarce/{quantity}"
     //Devuelve un optional de lista de Product de los que tengan un stock menor a la cantidad dada.
     @GetMapping("/scarce/{quantity}")
-    public Optional<List<Product>> getScarceProducts(@PathVariable("quantity") int quantity) {
-        return productService.getScarceProducts(quantity);
+    public ResponseEntity<List<Product>> getScarceProducts(@PathVariable("quantity") int quantity) {
+        return productService.getScarceProducts(quantity,true)
+                .map(products -> new ResponseEntity<>(products, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     //El nombre deberia ser unico, descartar.
