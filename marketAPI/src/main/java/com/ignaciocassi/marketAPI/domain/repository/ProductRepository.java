@@ -14,16 +14,14 @@ public interface ProductRepository {
 
     Optional<List<Product>> getByCategory(int categoryId);
 
-    Optional<List<Product>> getScarce(int quantity, boolean activo);
+    Optional<List<Product>> getScarce(int quantity);
 
     Optional<Product> getProduct(int productId);
 
-    Optional<Product> getProductByName(String name);
+    Optional<List<Product>> getProductByName(String name);
 
     Product save(Product product);
 
     void delete(int productId);
-
-    void delete(String name);
 
 }

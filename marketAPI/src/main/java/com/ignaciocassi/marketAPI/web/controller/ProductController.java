@@ -2,64 +2,77 @@ package com.ignaciocassi.marketAPI.web.controller;
 
 import com.ignaciocassi.marketAPI.domain.Product;
 import com.ignaciocassi.marketAPI.domain.service.ProductService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
-//Indica que es un controlador de una API REST.
 @RestController
-//Solicita el path para este controlador a partir del cual recibirá peticiones.
 @RequestMapping("/products")
 public class ProductController {
 
-    //ProductControoler se encarga de recibir las peticiones en el path "/productos"
-    //Utiliza el ProductService para realizar las tareas solicitadas en cada tipo de petición.
-
-    //Inyecta el servicio ProductService.
-    //Podemos usar @Autowired porque este tiene una anotación de componente @Service
     @Autowired
     private ProductService productService;
 
-    //Indica que este método responderá al path "/productos/all"
-    //Devuelve una Lista de Product mediante ProductService.
     @GetMapping("/all")
+    @ApiOperation("Get all products.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK."),
+            @ApiResponse(code = 404, message = "Products not found.")
+    })
     public ResponseEntity<List<Product>> getAll() {
         return new ResponseEntity<>(productService.getAll(), HttpStatus.OK);
     }
 
-    //Indica que este método responderá al path "/productos/{id}"
-    //Devuelve un optional de Product mediante ProductService.
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable("id") int productId) {
+    @ApiOperation("Get a product by product ID.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK."),
+            @ApiResponse(code = 404, message = "Product not found.")
+    })
+    public ResponseEntity<Product> getProduct(@ApiParam(value = "The id of the product.", required = true, example = "2") @PathVariable("id") int productId) {
         return productService.getProduct(productId)
                 .map(product -> new ResponseEntity<>(product, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    //Indica que este método responderá al path "/productos/category/{category}"
-    //Devuelve un optional de Lista de Product mediante ProductService.
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<Product>> getByCategory(@PathVariable("category") int categoryId) {
-        return productService.getByCategory(categoryId)
-                .map(products -> new ResponseEntity<>(products, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @ApiOperation("Get all products from a category by category ID.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK."),
+            @ApiResponse(code = 404, message = "No products were found for that category ID.")
+    })
+    public ResponseEntity<List<Product>> getByCategory(@ApiParam(value = "The id of the category.", required = true, example = "1") @PathVariable("category") int categoryId) {
+        Optional<List<Product>> products = productService.getByCategory(categoryId);
+        if (!products.get().isEmpty()) {
+            return new ResponseEntity<>(products.get(),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    //Indica que este método responderá al path "/productos/save"
-    //Recibe un Product en el body y lo guarda como ProductoUutilizando ProductService. Finalmente lo devuelve.
     @PostMapping("/save")
+    @ApiOperation("Save a product.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Successfully created."),
+    })
     public ResponseEntity<Product> save(@RequestBody Product product) {
         return new ResponseEntity<>(productService.save(product),HttpStatus.CREATED);
     }
 
-    //Indica que este método responderá al path "/productos/delete/{id}
-    //Recibe un id y borra el Producto mediante ProductService, devuelve un booleano.
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable("id") int productId) {
+    @ApiOperation("Delete a product by pruduct ID.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK."),
+            @ApiResponse(code = 404, message = "Product not found.")
+    })
+    public ResponseEntity delete(@ApiParam(value = "The id of the product.",required = true, example = "2")@PathVariable("id") int productId) {
         if (productService.delete(productId)) {
             return new ResponseEntity(HttpStatus.OK);
         } else {
@@ -67,25 +80,31 @@ public class ProductController {
         }
     }
 
-    //Indica que este método respondera al path "productos/scarce/{quantity}"
-    //Devuelve un optional de lista de Product de los que tengan un stock menor a la cantidad dada.
     @GetMapping("/scarce/{quantity}")
-    public ResponseEntity<List<Product>> getScarceProducts(@PathVariable("quantity") int quantity) {
-        return productService.getScarceProducts(quantity,true)
+    @ApiOperation("Get products which have a stock below a specified amount.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK."),
+            @ApiResponse(code = 404, message = "No products found below the stock minimum.")
+    })
+    public ResponseEntity<List<Product>> getScarceProducts(@ApiParam(value = "The minimum amount of the product.",required = true, example = "2")@PathVariable("quantity") int quantity) {
+        Optional<List<Product>> escasos = productService.getScarceProducts(quantity);
+        if (!escasos.get().isEmpty()) {
+            return new ResponseEntity<>(escasos.get(),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/name/{name}")
+    @ApiOperation("Get products by similar product name.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK."),
+            @ApiResponse(code = 404, message = "Product not found.")
+    })
+    public ResponseEntity<List<Product>> getProductByName(@ApiParam(value = "The name of the product to search.",required = true, example = "Lechuga")@PathVariable("name") String name) {
+        return productService.getProductByName(name)
                 .map(products -> new ResponseEntity<>(products, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    //El nombre deberia ser unico, descartar.
-    @GetMapping("/name/{name}")
-    public Optional<Product> getProductByName(@PathVariable("name") String name) {
-        return productService.getProductByName(name);
-    }
-
-    //El nombre debería ser único, descartar.
-    @DeleteMapping("/deletebyname/{name}")
-    public boolean delete(@PathVariable("name") String name) {
-        return productService.delete(name);
     }
 
 }
