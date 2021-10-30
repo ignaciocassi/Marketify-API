@@ -10,6 +10,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+//Repositorio de la capa de persistencia.
+//Se encarga realizar las transferencias con la base de datos, utilizando productoCrudRepository (CRUD y C. Personaliz).
+//Utiliza mapper para convertir de Entidad de Persistencia (Producto) que son devueltas por las operaciones de
+//ProductoCrudRepository, a Entidad de dominio (Product).
+
 @Repository
 public class ProductoRepository implements ProductRepository {
 
@@ -20,9 +25,9 @@ public class ProductoRepository implements ProductRepository {
     private ProductMapper mapper;
 
     @Override
-    public List<Product> getAll() {
+    public Optional<List<Product>> getAll() {
         List<Producto> productos = (List<Producto>) productoCrudRepository.findAll();
-        return mapper.toProducts(productos);
+        return Optional.of(mapper.toProducts(productos));
     }
 
     @Override
@@ -39,7 +44,8 @@ public class ProductoRepository implements ProductRepository {
 
     @Override
     public Optional<Product> getProduct(int productId) {
-        return productoCrudRepository.findById(productId).map(producto -> mapper.toProduct(producto));
+        return productoCrudRepository.findById(productId)
+                .map(producto -> mapper.toProduct(producto));
     }
 
     @Override

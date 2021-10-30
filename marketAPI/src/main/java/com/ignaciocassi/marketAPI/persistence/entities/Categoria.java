@@ -3,7 +3,7 @@ package com.ignaciocassi.marketAPI.persistence.entities;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+@Entity(name="categorias")
 @Table(name="categorias")
 public class Categoria {
 

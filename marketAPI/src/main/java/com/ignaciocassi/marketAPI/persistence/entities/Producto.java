@@ -2,6 +2,8 @@ package com.ignaciocassi.marketAPI.persistence.entities;
 
 import javax.persistence.*;
 
+//Entidad de persistencia, define mediante anotaciones su tabla correspondiente y para cada atributo, su columna.
+
 @Entity
 @Table(name="productos")
 public class Producto {

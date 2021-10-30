@@ -8,14 +8,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-//Component es más general, pero service tiene una diferenciación semántica, de que forma parte de la lógica de negocio.
+//Servicio utilizado para implementar lógica de negocio y para desacoplar la capa de dominio de la capa de persistencia.
+
 @Service
 public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
 
-    public List<Product> getAll() {
+    public Optional<List<Product>> getAll() {
         return productRepository.getAll();
     }
 
@@ -32,9 +33,10 @@ public class ProductService {
     }
 
     public boolean delete(int productId) {
-        return getProduct(productId).map(product -> {
-            productRepository.delete(productId);
-            return true;
+        return getProduct(productId)
+                .map(product -> {
+                    productRepository.delete(productId);
+                    return true;
         }).orElse(false);
     }
 

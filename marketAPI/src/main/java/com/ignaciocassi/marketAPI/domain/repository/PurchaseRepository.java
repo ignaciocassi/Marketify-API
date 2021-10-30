@@ -8,9 +8,10 @@ import java.util.Optional;
 public interface PurchaseRepository {
 
     //Especificación del repositorio.
-    //Define lo que las implementaciones del repositorio deberán hacer.
+    //Define las operaciones que serán utilizadas en la capa de dominio y que deben ser implementadas
+    //Por el respositorio.
 
-    List<Purchase> getAll();
+    Optional<List<Purchase>> getAll();
     Optional<List<Purchase>> getByClient(String clientId);
     Purchase save(Purchase purchase);
 }

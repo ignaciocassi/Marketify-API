@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-//Indica que es un componente bean de Spring y es un repositorio.
+//Repositorio de la capa de persistencia utilizado por la capa de dominio.
+//Implementa la especifiación del repositorio PurchaseRepository.
+
 @Repository
 public class CompraRepository implements PurchaseRepository {
 
@@ -21,8 +23,9 @@ public class CompraRepository implements PurchaseRepository {
     private PurchaseMapper mapper;
 
     @Override
-    public List<Purchase> getAll() {
-        return mapper.toPurchases((List<Compra>) compraCrudRepository.findAll());
+    public Optional<List<Purchase>> getAll() {
+        List<Compra> compras = (List<Compra>) compraCrudRepository.findAll();
+        return Optional.of(mapper.toPurchases(compras));
     }
 
     @Override

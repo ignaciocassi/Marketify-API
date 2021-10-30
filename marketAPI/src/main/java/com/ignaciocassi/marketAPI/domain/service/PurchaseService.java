@@ -2,14 +2,12 @@ package com.ignaciocassi.marketAPI.domain.service;
 
 import com.ignaciocassi.marketAPI.domain.Purchase;
 import com.ignaciocassi.marketAPI.domain.repository.PurchaseRepository;
-import com.ignaciocassi.marketAPI.persistence.crud.CompraCrudRepository;
-import com.ignaciocassi.marketAPI.persistence.crud.ProductoCrudRepository;
-import com.ignaciocassi.marketAPI.persistence.mapper.PurchaseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+//Servicio utilizado para implementar lógica de negocio y para desacoplar la capa de dominio de la capa de persistencia.
 
 @Service
 public class PurchaseService {
@@ -17,7 +15,7 @@ public class PurchaseService {
     @Autowired
     private PurchaseRepository purchaseRepository;
 
-    public List<Purchase> getAll() {
+    public Optional<List<Purchase>> getAll() {
         return purchaseRepository.getAll();
     }
 
