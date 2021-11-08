@@ -12,6 +12,8 @@ public interface PurchaseRepository {
     //Por el respositorio.
 
     Optional<List<Purchase>> getAll();
+
     Optional<List<Purchase>> getByClient(String clientId);
+
     Purchase save(Purchase purchase);
 }

@@ -133,4 +133,14 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiErrorResponse, notFound);
     }
 
+    @ExceptionHandler(value = {ClientNotFoundException.class})
+    public ResponseEntity<Object> handleApiRequestException(ClientNotFoundException e) {
+        HttpStatus notFound = HttpStatus.NOT_FOUND;
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                e.getMessage(),
+                notFound,
+                ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"))
+        );
+        return new ResponseEntity<>(apiErrorResponse, notFound);
+    }
 }

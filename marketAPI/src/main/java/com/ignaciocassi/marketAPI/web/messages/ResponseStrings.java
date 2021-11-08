@@ -4,6 +4,7 @@ import org.springframework.boot.ansi.Ansi8BitColor;
 
 public class ResponseStrings {
 
+    public static final String CLIENT_NOT_FOUND = "No se encontró ningún cliente con esa ID.";
     public static final String NO_PURCHASES_MADE = "El cliente aún no ha realizado ninguna compra.";
     public static final String NO_PURCHASES_LISTED = "Aún no se han registrado compras.";
     public static final String NO_CATEGORIES_FOUND = "No existen categorías que coincidan con la búsqueda solicitada.";
