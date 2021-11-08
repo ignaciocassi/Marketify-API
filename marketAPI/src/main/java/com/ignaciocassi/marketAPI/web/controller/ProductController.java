@@ -2,6 +2,11 @@ package com.ignaciocassi.marketAPI.web.controller;
 
 import com.ignaciocassi.marketAPI.domain.Product;
 import com.ignaciocassi.marketAPI.domain.service.ProductService;
+import com.ignaciocassi.marketAPI.web.exceptions.NoProductsInCategoryException;
+import com.ignaciocassi.marketAPI.web.exceptions.NoProductsListedException;
+import com.ignaciocassi.marketAPI.web.exceptions.NoScarceProductsException;
+import com.ignaciocassi.marketAPI.web.exceptions.ProductNotFoundException;
+import com.ignaciocassi.marketAPI.web.messages.ResponseStrings;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -27,9 +32,12 @@ public class ProductController {
             @ApiResponse(code = 404, message = "No products not found.")
     })
     public ResponseEntity<List<Product>> getAll() {
-        return productService.getAll()
-                .map(products -> new ResponseEntity<>(products, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Optional<List<Product>> products = productService.getAll();
+        if (!products.get().isEmpty()) {
+            return new ResponseEntity<>(products.get(), HttpStatus.OK);
+        } else {
+            throw new NoProductsListedException(ResponseStrings.NO_PRODUCTS_LISTED);
+        }
     }
 
     @GetMapping("/{id}")
@@ -39,9 +47,12 @@ public class ProductController {
             @ApiResponse(code = 404, message = "Product not found.")
     })
     public ResponseEntity<Product> getProduct(@ApiParam(value = "The id of the product.", required = true, example = "2") @PathVariable("id") int productId) {
-        return productService.getProduct(productId)
-                .map(product -> new ResponseEntity<>(product, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Optional<Product> product = productService.getProduct(productId);
+        if (product.isPresent()) {
+            return new ResponseEntity<>(product.get(), HttpStatus.OK);
+        } else {
+            throw new ProductNotFoundException(ResponseStrings.PRODUCT_NOT_FOUND);
+        }
     }
 
     @GetMapping("/category/{category}")
@@ -55,7 +66,7 @@ public class ProductController {
         if (!products.get().isEmpty()) {
             return new ResponseEntity<>(products.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new NoProductsInCategoryException(ResponseStrings.NO_PRODUCTS_IN_CATEGORY);
         }
     }
 
@@ -78,7 +89,7 @@ public class ProductController {
         if (productService.delete(productId)) {
             return new ResponseEntity(HttpStatus.OK);
         } else {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            throw new ProductNotFoundException(ResponseStrings.PRODUCT_NOT_FOUND);
         }
     }
 
@@ -93,7 +104,7 @@ public class ProductController {
         if (!escasos.get().isEmpty()) {
             return new ResponseEntity<>(escasos.get(),HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new NoScarceProductsException(ResponseStrings.NO_SCARSE_PRODUCTS);
         }
     }
 
@@ -104,9 +115,12 @@ public class ProductController {
             @ApiResponse(code = 404, message = "Product not found.")
     })
     public ResponseEntity<List<Product>> getProductByName(@ApiParam(value = "The name of the product to search.",required = true, example = "Lechuga")@PathVariable("name") String name) {
-        return productService.getProductByName(name)
-                .map(products -> new ResponseEntity<>(products, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Optional<List<Product>> products = productService.getProductByName(name);
+        if (!products.get().isEmpty()) {
+            return new ResponseEntity<>(products.get(), HttpStatus.OK);
+        } else {
+            throw new ProductNotFoundException(ResponseStrings.NO_PRODUCTS_FOUND);
+        }
     }
 
 }

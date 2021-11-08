@@ -37,9 +37,9 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
         try {
             String jwt = userSigninService.loginUsuario(request);
-            return new ResponseEntity<>(new AuthenticationResponse(ResponseStrings.SUCCESSFULL_LOGIN ,jwt), HttpStatus.OK);
+            return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.OK);
         } catch (BadCredentialsException e) {
-            return new ResponseEntity<>(new AuthenticationResponse(ResponseStrings.USERNAME_PASSWORD_INCORRECT), HttpStatus.FORBIDDEN);
+            throw new BadCredentialsException(ResponseStrings.USERNAME_PASSWORD_INCORRECT);
         }
     }
 
@@ -54,11 +54,11 @@ public class AuthController {
             userRegistratorService.registerNewUsuario(request);
             return new ResponseEntity<>(ResponseStrings.SUCCESSFULL_REGISTRATION, HttpStatus.CREATED);
         } catch (UsernameExistsException e) {
-            return new ResponseEntity<>(ResponseStrings.USERNAME_TAKEN, HttpStatus.CONFLICT);
+            throw new UsernameExistsException(ResponseStrings.USERNAME_TAKEN);
         } catch (UsernameNotValidException e) {
-            return new ResponseEntity<>(ResponseStrings.USERNAME_UNACCEPTABLE, HttpStatus.NOT_ACCEPTABLE);
+            throw new UsernameNotValidException(ResponseStrings.USERNAME_UNACCEPTABLE);
         } catch (PasswordNotValidException e) {
-            return new ResponseEntity<>(ResponseStrings.PASSWORD_UNACCEPTABLE, HttpStatus.NOT_ACCEPTABLE);
+            throw new PasswordNotValidException(ResponseStrings.PASSWORD_UNACCEPTABLE);
         }
     }
 
