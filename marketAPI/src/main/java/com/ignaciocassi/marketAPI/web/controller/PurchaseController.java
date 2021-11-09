@@ -2,6 +2,9 @@ package com.ignaciocassi.marketAPI.web.controller;
 
 import com.ignaciocassi.marketAPI.domain.Purchase;
 import com.ignaciocassi.marketAPI.domain.service.PurchaseService;
+import com.ignaciocassi.marketAPI.web.exceptions.ProductNotFoundException;
+import com.ignaciocassi.marketAPI.web.exceptions.PurchaseNotFoundException;
+import com.ignaciocassi.marketAPI.web.messages.ResponseStrings;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -27,9 +30,15 @@ public class PurchaseController {
             @ApiResponse(code = 404, message = "No purchases were found.")
     })
     public ResponseEntity<List<Purchase>> getAll() {
-        return purchaseService.getAll()
-                .map(purchases -> new ResponseEntity<>(purchases, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        //return purchaseService.getAll()
+        //        .map(purchases -> new ResponseEntity<>(purchases, HttpStatus.OK))
+        //        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Optional<List<Purchase>> purchases = purchaseService.getAll();
+        if (!purchases.get().isEmpty()) {
+            return new ResponseEntity<>(purchases.get(), HttpStatus.OK);
+        } else {
+            throw new PurchaseNotFoundException(ResponseStrings.NO_PURCHASES_LISTED);
+        }
     }
 
     @GetMapping("/client/{idClient}")
@@ -43,7 +52,7 @@ public class PurchaseController {
         if (!purchases.get().isEmpty()) {
             return new ResponseEntity<>(purchases.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new PurchaseNotFoundException(ResponseStrings.NO_PURCHASES_MADE);
         }
     }
 
