@@ -7,10 +7,7 @@ import com.ignaciocassi.marketAPI.web.exceptions.NoProductsListedException;
 import com.ignaciocassi.marketAPI.web.exceptions.NoScarceProductsException;
 import com.ignaciocassi.marketAPI.web.exceptions.ProductNotFoundException;
 import com.ignaciocassi.marketAPI.web.messages.ResponseStrings;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +22,9 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+
     @GetMapping("/all")
-    @ApiOperation("Get all products.")
+    @ApiOperation(value = "Get all products.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK."),
             @ApiResponse(code = 404, message = "No products not found.")
@@ -41,7 +39,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation("Get a product by product ID.")
+    @ApiOperation(value = "Get a product by product ID.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK."),
             @ApiResponse(code = 404, message = "Product not found.")
@@ -56,7 +54,7 @@ public class ProductController {
     }
 
     @GetMapping("/category/{category}")
-    @ApiOperation("Get all products from a category by category ID.")
+    @ApiOperation(value = "Get all products from a category by category ID.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK."),
             @ApiResponse(code = 404, message = "No products were found for that category ID.")
@@ -71,7 +69,7 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    @ApiOperation("Save a product.")
+    @ApiOperation(value = "Save a product.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 201, message = "Product successfully created."),
     })
@@ -80,7 +78,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/delete/{id}")
-    @ApiOperation("Delete a product by pruduct ID.")
+    @ApiOperation(value = "Delete a product by pruduct ID.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK."),
             @ApiResponse(code = 404, message = "Product not found.")
@@ -94,7 +92,7 @@ public class ProductController {
     }
 
     @GetMapping("/scarce/{quantity}")
-    @ApiOperation("Get products which have a stock below a specified amount.")
+    @ApiOperation(value = "Get products which have a stock below a specified amount.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK."),
             @ApiResponse(code = 404, message = "No products found below the stock minimum.")
@@ -109,7 +107,7 @@ public class ProductController {
     }
 
     @GetMapping("/name/{name}")
-    @ApiOperation("Get products by similar product name.")
+    @ApiOperation(value = "Get products by similar product name.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK."),
             @ApiResponse(code = 404, message = "Product not found.")

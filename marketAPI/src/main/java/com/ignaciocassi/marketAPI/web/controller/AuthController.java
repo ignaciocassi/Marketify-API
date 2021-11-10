@@ -8,6 +8,8 @@ import com.ignaciocassi.marketAPI.web.exceptions.PasswordNotValidException;
 import com.ignaciocassi.marketAPI.web.exceptions.UsernameExistsException;
 import com.ignaciocassi.marketAPI.web.exceptions.UsernameNotValidException;
 import com.ignaciocassi.marketAPI.web.messages.ResponseStrings;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +32,12 @@ public class AuthController {
     private UserRegistratorService userRegistratorService;
 
     @PostMapping("/login")
+    @ApiOperation("Login to account providing username and password, and get JWT when authenticated.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "User successfully logged in."),
             @ApiResponse(code = 403, message = "User login failed.")
     })
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> login(@ApiParam(value = "Body containing username and password in JSON format.") @RequestBody AuthenticationRequest request) {
         try {
             String jwt = userSigninService.loginUsuario(request);
             return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.OK);
@@ -44,12 +47,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+    @ApiOperation("Register new account providing desired username and password.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "User successfully registered."),
             @ApiResponse(code = 409, message = "Username is taken."),
             @ApiResponse(code = 406, message = "Username not valid.")
     })
-    public ResponseEntity<String> register(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<String> register(@ApiParam(value = "Body containing username and password in JSON format.")@RequestBody AuthenticationRequest request) {
         try {
             userRegistratorService.registerNewUsuario(request);
             return new ResponseEntity<>(ResponseStrings.SUCCESSFULL_REGISTRATION, HttpStatus.CREATED);

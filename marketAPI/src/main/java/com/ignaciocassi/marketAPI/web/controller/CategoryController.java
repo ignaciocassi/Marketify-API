@@ -21,7 +21,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/all")
-    @ApiOperation("Get all categories.")
+    @ApiOperation(value = "Get all categories.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK."),
             @ApiResponse(code = 404, message = "No categories were found.")
@@ -36,7 +36,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation("Get a category by category ID.")
+    @ApiOperation(value = "Get a category by category ID.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK."),
             @ApiResponse(code = 404, message = "Category not found.")
@@ -52,7 +52,7 @@ public class CategoryController {
     }
 
     @GetMapping("/name/{name}")
-    @ApiOperation("Get categories by similar category name")
+    @ApiOperation(value = "Get categories by similar category name", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK."),
             @ApiResponse(code = 404, message = "No categories were found.")
@@ -68,7 +68,7 @@ public class CategoryController {
     }
 
     @PostMapping("/save")
-    @ApiOperation("Save a category.")
+    @ApiOperation(value = "Save a category.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 201, message = "Category successfully created.")
     })
@@ -78,7 +78,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete/{id}")
-    @ApiOperation("Delete a category by category ID.")
+    @ApiOperation(value = "Delete a category by category ID.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK."),
             @ApiResponse(code = 404, message = "No category found.")
@@ -93,7 +93,7 @@ public class CategoryController {
     }
 
     @PostMapping("/togglestatus/{id}")
-    @ApiOperation("Toggle a category's status.")
+    @ApiOperation(value = "Toggle a category's status.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK."),
             @ApiResponse(code = 404, message = "No category found.")

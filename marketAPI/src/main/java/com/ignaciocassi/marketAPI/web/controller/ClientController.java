@@ -6,10 +6,7 @@ import com.ignaciocassi.marketAPI.domain.service.ClientService;
 import com.ignaciocassi.marketAPI.web.exceptions.ClientNotFoundException;
 import com.ignaciocassi.marketAPI.web.exceptions.ProductNotFoundException;
 import com.ignaciocassi.marketAPI.web.messages.ResponseStrings;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +22,7 @@ public class ClientController {
     private ClientService clientService;
 
     @GetMapping("/{id}")
-    @ApiOperation("Get a client by client ID.")
+    @ApiOperation(value = "Get a client by client ID.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK."),
             @ApiResponse(code = 404, message = "Client not found.")
@@ -40,7 +37,7 @@ public class ClientController {
     }
 
     @PostMapping("/save")
-    @ApiOperation("Save a client.")
+    @ApiOperation(value = "Save a client.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 201, message = "Client successfully created."),
     })

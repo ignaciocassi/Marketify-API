@@ -5,10 +5,7 @@ import com.ignaciocassi.marketAPI.domain.service.PurchaseService;
 import com.ignaciocassi.marketAPI.web.exceptions.ProductNotFoundException;
 import com.ignaciocassi.marketAPI.web.exceptions.PurchaseNotFoundException;
 import com.ignaciocassi.marketAPI.web.messages.ResponseStrings;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +21,7 @@ public class PurchaseController {
     private PurchaseService purchaseService;
 
     @GetMapping("/all")
-    @ApiOperation("Get all the purchases.")
+    @ApiOperation(value = "Get all the purchases.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK."),
             @ApiResponse(code = 404, message = "No purchases were found.")
@@ -42,7 +39,7 @@ public class PurchaseController {
     }
 
     @GetMapping("/client/{idClient}")
-    @ApiOperation("Get all the purchases from a client by client ID.")
+    @ApiOperation(value = "Get all the purchases from a client by client ID.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK."),
             @ApiResponse(code = 404, message = "No purchases were found for that client ID.")
@@ -57,7 +54,7 @@ public class PurchaseController {
     }
 
     @PostMapping("/save")
-    @ApiOperation("Save a purchase.")
+    @ApiOperation(value = "Save a purchase.", authorizations = { @Authorization(value="JWT") })
     @ApiResponses({
             @ApiResponse(code = 201, message = "Purchase successfully created.")
     })
