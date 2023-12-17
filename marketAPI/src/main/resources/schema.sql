@@ -1,3 +1,8 @@
+--------------------------------------------------------
+-- Database: "marketify"
+--------------------------------------------------------
+CREATE DATABASE marketify;
+
 -- -----------------------------------------------------
 -- Table "CATEGORIAS"
 -- -----------------------------------------------------
@@ -83,7 +88,7 @@ CREATE TABLE  COMPRAS_PRODUCTOS (
 -- -----------------------------------------------------
 -- Table "USUARIO"
 -- -----------------------------------------------------
-CREATE TABLE usuario
+CREATE TABLE USUARIO
 (
     id serial primary key,
     username varchar(180),
@@ -92,6 +97,3 @@ CREATE TABLE usuario
     roles varchar(80)
 );
 
-DROP TABLE USUARIO;
-
-SELECT * FROM USUARIO;
