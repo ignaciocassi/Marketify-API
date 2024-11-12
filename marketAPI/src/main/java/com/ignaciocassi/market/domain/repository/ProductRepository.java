@@ -18,10 +18,12 @@ public interface ProductRepository {
 
     Optional<Product> getProduct(int productId);
 
-    Optional<List<Product>> getProductByName(String name);
+    Optional<List<Product>> getProductsByNameContaining(String name);
+
+    Optional<Product> getProductByName(String name);
 
     Product save(Product product);
 
-    void delete(int productId);
+    Integer deleteByIdProducto(int productId);
 
 }

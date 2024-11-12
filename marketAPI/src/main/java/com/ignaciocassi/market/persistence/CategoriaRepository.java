@@ -44,6 +44,12 @@ public class CategoriaRepository implements CategoryRepository {
     }
 
     @Override
+    public Optional<Category> getCategoryById(int categoryId) {
+        return categoriaCrudRepository.findById(categoryId)
+                .map(categoria -> mapper.toCategory(categoria));
+    }
+
+    @Override
     public Category save(Category category) {
         Categoria categoria = mapper.toCategoria(category);
         return mapper.toCategory(categoriaCrudRepository.save(categoria));

@@ -2,52 +2,112 @@ package com.ignaciocassi.market.domain.service;
 
 import com.ignaciocassi.market.domain.Product;
 import com.ignaciocassi.market.domain.repository.ProductRepository;
+import com.ignaciocassi.market.web.exceptions.*;
+import com.ignaciocassi.market.web.messages.ResponseStrings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-//Servicio utilizado para implementar lógica de negocio y para desacoplar la capa de dominio de la capa de persistencia.
 @Service
 public class ProductService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
+
     private final ProductRepository productRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    private final CategoryService categoryService;
+
+    private final PurchaseService purchaseService;
+
+    public ProductService(ProductRepository productRepository, CategoryService categoryService, PurchaseService purchaseService) {
         this.productRepository = productRepository;
+        this.categoryService = categoryService;
+        this.purchaseService = purchaseService;
     }
 
-    public Optional<List<Product>> getAll() {
-        return productRepository.getAll();
+    public List<Product> getAll() {
+        logger.info("Fetching all products");
+        return productRepository.getAll()
+                .filter(products -> !products.isEmpty())
+                .orElseThrow(() -> {
+                    logger.info("No products listed");
+                    return new NoProductsListedException(ResponseStrings.NO_PRODUCTS_LISTED);
+                });
     }
 
-    public Optional<Product> getProduct(int productId) {
-        return productRepository.getProduct(productId);
+    public Product getProduct(int productId) {
+        logger.info("Fetching product with ID: {}", productId);
+        return productRepository.getProduct(productId)
+                .orElseThrow(() -> {
+                    logger.warn("Product not found with ID: {}", productId);
+                    return new ProductNotFoundException(ResponseStrings.PRODUCT_NOT_FOUND);
+                });
     }
 
-    public Optional<List<Product>> getByCategory(int categoryId) {
-        return productRepository.getByCategory(categoryId);
+    public List<Product> getByCategory(int categoryId) {
+        logger.info("Fetching products by category ID: {}", categoryId);
+        if (categoryService.getCategoryById(categoryId).isEmpty()) {
+            logger.warn("Category not found with ID: {}", categoryId);
+            throw new CategoryNotFoundException(ResponseStrings.CATEGORY_NOT_FOUND);
+        }
+        return productRepository.getByCategory(categoryId)
+                .orElseThrow(() -> {
+                    logger.warn("No products found in category ID: {}", categoryId);
+                    return new CategoryNotFoundException(ResponseStrings.NO_PRODUCTS_IN_CATEGORY);
+                });
     }
 
     public Product save(Product product) {
-        // TODO: Validar si el producto ya existe antes de guardarlo
+        logger.info("Saving product: {}", product.getName());
+        if (categoryService.getCategoryById(product.getCategoryId()).isEmpty()) {
+            logger.warn("Category not found with ID: {}", product.getCategoryId());
+            throw new CategoryNotFoundException(ResponseStrings.CATEGORY_NOT_FOUND);
+        }
+        if (productRepository.getProductByName(product.getName()).isPresent()) {
+            logger.warn("Product already exists with name: {}", product.getName());
+            throw new ProductAlreadyExistsException(ResponseStrings.PRODUCT_ALREADY_EXISTS);
+        }
         return productRepository.save(product);
     }
 
-    public boolean delete(int productId) {
-        // TODO: Validar si el producto fue comprado antes de intentar eliminarlo
-        return getProduct(productId)
-                .map(product -> {
-                    productRepository.delete(productId);
-                    return true;
-        }).orElse(false);
+    @Transactional
+    public Integer delete(int productId) {
+        logger.info("Deleting product with ID: {}", productId);
+        Optional<Product> product = productRepository.getProduct(productId);
+        if (product.isEmpty()) {
+            logger.warn("Product not found with ID: {}", productId);
+            throw new ProductNotFoundException(ResponseStrings.PRODUCT_NOT_FOUND);
+        }
+        if (!purchaseService.getByContainingProduct(productId).get().isEmpty()) {
+            logger.warn("Product cannot be deleted, it is associated with purchases: {}", productId);
+            throw new ProductDeleteException(ResponseStrings.PRODUCT_CANNOT_BE_DELETED);
+        }
+        if (!product.get().isActive()) {
+            logger.warn("Product is already deleted: {}", productId);
+            throw new ProductDeleteException(ResponseStrings.PRODUCT_IS_DELETED);
+        }
+        return productRepository.deleteByIdProducto(productId);
     }
 
-    public Optional<List<Product>> getScarceProducts(int quantity) {
-        return productRepository.getScarce(quantity);
+    public List<Product> getScarceProducts(int quantity) {
+        logger.info("Fetching products with stock less than: {}", quantity);
+        return productRepository.getScarce(quantity)
+                .orElseThrow(() -> {
+                    logger.warn("No products found with stock less than: {}", quantity);
+                    return new NoProductsListedException(ResponseStrings.NO_SCARCE_PRODUCTS);
+                });
     }
 
-    public Optional<List<Product>> getProductByName(String name) {
-        return productRepository.getProductByName(name);
+    public List<Product> getProductsByName(String name) {
+        logger.info("Fetching products with name containing: {}", name);
+        return productRepository.getProductsByNameContaining(name)
+                .orElseThrow(() -> {
+                    logger.warn("No products found with name containing: {}", name);
+                    return new ProductNotFoundException(ResponseStrings.NO_PRODUCTS_FOUND);
+                });
     }
 
 }

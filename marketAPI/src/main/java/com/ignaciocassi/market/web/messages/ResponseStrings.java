@@ -11,10 +11,13 @@ public class ResponseStrings {
     public static final String CATEGORY_NOT_FOUND = "No se ha encontrado la categoría.";
     public static final String NO_CATEGORIES_LISTED = "Aún no se han creado categorías.";
     public static final String NO_PRODUCTS_FOUND = "No existen productos que coincidan con la búsqueda solicitada.";
-    public static final String NO_SCARSE_PRODUCTS = "No existen productos escasos con un stock menor al solicitado.";
+    public static final String NO_SCARCE_PRODUCTS = "No existen productos escasos con un stock menor al solicitado.";
     public static final String NO_PRODUCTS_IN_CATEGORY = "Esta categoría aún no tiene productos o no existe.";
     public static final String PRODUCT_NOT_FOUND = "Producto no encontrado.";
+    public static final String PRODUCT_CANNOT_BE_DELETED = "El producto no puede ser eliminado porque ya ha sido comprado.";
     public static final String NO_PRODUCTS_LISTED = "Aún no se han creado productos.";
+    public static final String PRODUCT_ALREADY_EXISTS = "Ya existe un objeto con el nombre especificado.";
+    public static final String PRODUCT_IS_DELETED = "El producto ya fue eliminado.";
     public static final String USERNAME_PASSWORD_INCORRECT = "El nombre de usuario o contraseña no son correctos, reintente.";
     public static final String SUCCESSFULL_REGISTRATION = "El usuario ha sido registrado exitosamente.";
     public static final String USERNAME_TAKEN = "El nombre de usuario ya está registrado, por favor elija otro.";

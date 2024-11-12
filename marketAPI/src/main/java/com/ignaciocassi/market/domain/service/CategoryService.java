@@ -29,6 +29,10 @@ public class CategoryService {
         return categoryRepository.getCategoryByName(name);
     }
 
+    public Optional<Category> getCategoryById(int categoryId) {
+        return categoryRepository.getCategoryById(categoryId);
+    }
+
     public Category save(Category category) {
         return categoryRepository.save(category);
     }

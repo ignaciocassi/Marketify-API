@@ -51,9 +51,15 @@ public class ProductoRepository implements ProductRepository {
     }
 
     @Override
-    public Optional<List<Product>> getProductByName(String name) {
+    public Optional<List<Product>> getProductsByNameContaining(String name) {
         List<Producto> productos = productoCrudRepository.findByNombreContainingIgnoreCase(name);
         return Optional.of(mapper.toProducts(productos));
+    }
+
+    @Override
+    public Optional<Product> getProductByName(String name) {
+        return productoCrudRepository.findByNombreEquals(name)
+                .map(producto -> mapper.toProduct(producto));
     }
 
     @Override
@@ -63,8 +69,8 @@ public class ProductoRepository implements ProductRepository {
     }
 
     @Override
-    public void delete(int productId) {
-        productoCrudRepository.deleteById(productId);
+    public Integer deleteByIdProducto(int productId) {
+        return productoCrudRepository.softDeleteByIdProducto(productId);
     }
 
 }

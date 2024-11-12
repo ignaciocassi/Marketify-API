@@ -6,8 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
@@ -19,8 +17,7 @@ public class ApiExceptionHandler {
         HttpStatus notAcceptable = HttpStatus.NOT_ACCEPTABLE;
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
                 e.getMessage(),
-                notAcceptable,
-                ZonedDateTime.now(ZoneId.of(zoneId))
+                notAcceptable
         );
         return new ResponseEntity<>(apiErrorResponse, notAcceptable);
     }
@@ -30,8 +27,7 @@ public class ApiExceptionHandler {
         HttpStatus notAcceptable = HttpStatus.NOT_ACCEPTABLE;
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
                 e.getMessage(),
-                notAcceptable,
-                ZonedDateTime.now(ZoneId.of(zoneId))
+                notAcceptable
         );
         return new ResponseEntity<>(apiErrorResponse, notAcceptable);
     }
@@ -41,8 +37,7 @@ public class ApiExceptionHandler {
         HttpStatus conflict = HttpStatus.CONFLICT;
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
                 e.getMessage(),
-                conflict,
-                ZonedDateTime.now(ZoneId.of(zoneId))
+                conflict
         );
         return new ResponseEntity<>(apiErrorResponse, conflict);
     }
@@ -52,8 +47,7 @@ public class ApiExceptionHandler {
         HttpStatus unauthorized = HttpStatus.UNAUTHORIZED;
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
                 e.getMessage(),
-                unauthorized,
-                ZonedDateTime.now(ZoneId.of(zoneId))
+                unauthorized
         );
         return new ResponseEntity<>(apiErrorResponse, unauthorized);
     }
@@ -63,8 +57,7 @@ public class ApiExceptionHandler {
         HttpStatus notFound = HttpStatus.NOT_FOUND;
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
                 e.getMessage(),
-                notFound,
-                ZonedDateTime.now(ZoneId.of(zoneId))
+                notFound
         );
         return new ResponseEntity<>(apiErrorResponse, notFound);
     }
@@ -74,8 +67,7 @@ public class ApiExceptionHandler {
         HttpStatus notFound = HttpStatus.NOT_FOUND;
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
                 e.getMessage(),
-                notFound,
-                ZonedDateTime.now(ZoneId.of(zoneId))
+                notFound
         );
         return new ResponseEntity<>(apiErrorResponse, notFound);
     }
@@ -85,8 +77,7 @@ public class ApiExceptionHandler {
         HttpStatus notFound = HttpStatus.NOT_FOUND;
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
                 e.getMessage(),
-                notFound,
-                ZonedDateTime.now(ZoneId.of(zoneId))
+                notFound
         );
         return new ResponseEntity<>(apiErrorResponse, notFound);
     }
@@ -96,8 +87,7 @@ public class ApiExceptionHandler {
         HttpStatus notFound = HttpStatus.NOT_FOUND;
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
                 e.getMessage(),
-                notFound,
-                ZonedDateTime.now(ZoneId.of(zoneId))
+                notFound
         );
         return new ResponseEntity<>(apiErrorResponse, notFound);
     }
@@ -107,8 +97,7 @@ public class ApiExceptionHandler {
         HttpStatus notFound = HttpStatus.NOT_FOUND;
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
                 e.getMessage(),
-                notFound,
-                ZonedDateTime.now(ZoneId.of(zoneId))
+                notFound
         );
         return new ResponseEntity<>(apiErrorResponse, notFound);
     }
@@ -118,8 +107,7 @@ public class ApiExceptionHandler {
         HttpStatus notFound = HttpStatus.NOT_FOUND;
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
                 e.getMessage(),
-                notFound,
-                ZonedDateTime.now(ZoneId.of(zoneId))
+                notFound
         );
         return new ResponseEntity<>(apiErrorResponse, notFound);
     }
@@ -129,8 +117,7 @@ public class ApiExceptionHandler {
         HttpStatus notFound = HttpStatus.NOT_FOUND;
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
                 e.getMessage(),
-                notFound,
-                ZonedDateTime.now(ZoneId.of(zoneId))
+                notFound
         );
         return new ResponseEntity<>(apiErrorResponse, notFound);
     }
@@ -140,9 +127,29 @@ public class ApiExceptionHandler {
         HttpStatus notFound = HttpStatus.NOT_FOUND;
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
                 e.getMessage(),
-                notFound,
-                ZonedDateTime.now(ZoneId.of(zoneId))
+                notFound
         );
         return new ResponseEntity<>(apiErrorResponse, notFound);
     }
+
+    @ExceptionHandler(value = {ProductDeleteException.class})
+    public ResponseEntity<Object> handleApiRequestException(ProductDeleteException e) {
+        HttpStatus conflict = HttpStatus.CONFLICT;
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                e.getMessage(),
+                conflict
+        );
+        return new ResponseEntity<>(apiErrorResponse, conflict);
+    }
+
+    @ExceptionHandler(value = {ProductAlreadyExistsException.class})
+    public ResponseEntity<Object> handleApiRequestException(ProductAlreadyExistsException e) {
+        HttpStatus conflict = HttpStatus.CONFLICT;
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
+                e.getMessage(),
+                conflict
+        );
+        return new ResponseEntity<>(apiErrorResponse, conflict);
+    }
+
 }
