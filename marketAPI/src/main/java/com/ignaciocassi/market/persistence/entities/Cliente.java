@@ -1,6 +1,6 @@
 package com.ignaciocassi.market.persistence.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity

@@ -4,10 +4,10 @@ import com.ignaciocassi.market.domain.Product;
 import com.ignaciocassi.market.domain.repository.ProductRepository;
 import com.ignaciocassi.market.web.exceptions.*;
 import com.ignaciocassi.market.web.messages.ResponseStrings;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 

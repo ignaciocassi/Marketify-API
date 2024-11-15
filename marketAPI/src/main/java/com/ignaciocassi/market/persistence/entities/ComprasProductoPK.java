@@ -1,7 +1,6 @@
 package com.ignaciocassi.market.persistence.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Embeddable
