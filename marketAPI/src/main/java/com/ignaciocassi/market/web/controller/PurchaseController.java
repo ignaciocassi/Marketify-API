@@ -7,7 +7,6 @@ import com.ignaciocassi.market.web.messages.ResponseStrings;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +26,8 @@ public class PurchaseController {
     @GetMapping("/all")
     @Operation(description = "Get all the purchases.",
             security = { @SecurityRequirement(name = "JWT") })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK."),
-            @ApiResponse(responseCode = "404", description = "No purchases were found.")
-    })
+    @ApiResponse(responseCode = "200", description = "OK.")
+    @ApiResponse(responseCode = "404", description = "No purchases were found.")
     public ResponseEntity<List<Purchase>> getAll() {
         return purchaseService.getAll()
                 .filter(purchases -> !purchases.isEmpty())
@@ -41,10 +38,8 @@ public class PurchaseController {
     @GetMapping("/client/{idClient}")
     @Operation(description = "Get all the purchases from a client by client ID.",
             security = { @SecurityRequirement(name = "JWT") })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK."),
-            @ApiResponse(responseCode = "404", description = "No purchases were found for that client ID.")
-    })
+    @ApiResponse(responseCode = "200", description = "OK.")
+    @ApiResponse(responseCode = "404", description = "No purchases were found for that client ID.")
     public ResponseEntity<List<Purchase>> getByClient(
             @Parameter(description = "The ID of the client.", required = true, example = "4546221")
             @PathVariable("idClient") String clientId) {
@@ -57,9 +52,7 @@ public class PurchaseController {
     @PostMapping("/save")
     @Operation(description = "Save a purchase.",
             security = { @SecurityRequirement(name = "JWT") })
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Purchase successfully created.")
-    })
+    @ApiResponse(responseCode = "201", description = "Purchase successfully created.")
     public ResponseEntity<Purchase> save(@RequestBody Purchase purchase) {
         return new ResponseEntity<>(purchaseService.save(purchase), HttpStatus.CREATED);
     }

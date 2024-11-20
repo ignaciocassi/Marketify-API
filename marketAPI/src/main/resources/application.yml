@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    active: dev
+  flyway:
+    locations: classpath:db/migration
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+  config:
+    import: optional:file:./secrets.properties
+
+server:
+  servlet:
+    context-path: /api/v1
+
+springdoc:
+  api-docs:
+    path: /api-docs

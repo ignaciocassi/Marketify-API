@@ -1,12 +1,12 @@
 -- CATEGORIAS
-INSERT INTO categorias VALUES (1, 'Frutas y verduras', true);
-INSERT INTO categorias VALUES (2, 'Pastelería', true);
-INSERT INTO categorias VALUES (3, 'Carnes y pescados', true);
-INSERT INTO categorias VALUES (4, 'Lácteos y huevos', true);
-INSERT INTO categorias VALUES (5, 'Bebidas', true);
-INSERT INTO categorias VALUES (6, 'Licores', true);
-INSERT INTO categorias VALUES (7, 'Cuidado personal', true);
-INSERT INTO categorias VALUES (8, 'Despensa', true);
+INSERT INTO categorias (id_categoria, descripcion, estado) VALUES (1, 'Frutas y verduras', true);
+INSERT INTO categorias (id_categoria, descripcion, estado) VALUES (2, 'Pastelería', true);
+INSERT INTO categorias (id_categoria, descripcion, estado) VALUES (3, 'Carnes y pescados', true);
+INSERT INTO categorias (id_categoria, descripcion, estado) VALUES (4, 'Lácteos y huevos', true);
+INSERT INTO categorias (id_categoria, descripcion, estado) VALUES (5, 'Bebidas', true);
+INSERT INTO categorias (id_categoria, descripcion, estado) VALUES (6, 'Licores', true);
+INSERT INTO categorias (id_categoria, descripcion, estado) VALUES (7, 'Cuidado personal', true);
+INSERT INTO categorias (id_categoria, descripcion, estado) VALUES (8, 'Despensa', true);
 
 -- PRODUCTOS
 INSERT INTO productos (id_producto, nombre, id_categoria, codigo_barras, precio_venta, cantidad_stock, estado) VALUES (1, 'Guayaba Feijoa', 1, '7029 A42 23', 300, 500, true);
@@ -75,6 +75,6 @@ INSERT INTO compras_productos (id_compra, id_producto, cantidad, total, estado) 
 INSERT INTO compras_productos (id_compra, id_producto, cantidad, total, estado) VALUES (1, 4, 2, 16400, true);
 INSERT INTO compras_productos (id_compra, id_producto, cantidad, total, estado) VALUES (1, 5, 1, 4000, true);
 
-SELECT setval('public.productos_id_producto_seq', 50, true);
-SELECT setval('public.categorias_id_categoria_seq', 8, true);
-SELECT setval('public.compras_id_compra_seq', 1, true);
+--SELECT setval('public.productos_id_producto_seq', 50, true);
+--SELECT setval('public.categorias_id_categoria_seq', 8, true);
+--SELECT setval('public.compras_id_compra_seq', 1, true);

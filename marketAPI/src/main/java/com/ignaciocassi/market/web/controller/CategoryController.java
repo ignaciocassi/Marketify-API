@@ -8,7 +8,6 @@ import com.ignaciocassi.market.web.messages.ResponseStrings;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +27,8 @@ public class CategoryController {
 
     @GetMapping("/all")
     @Operation(description = "Get all categories.", security = { @SecurityRequirement(name = "JWT") })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK."),
-            @ApiResponse(responseCode = "404", description = "No categories were found.")
-    })
+    @ApiResponse(responseCode = "200", description = "OK.")
+    @ApiResponse(responseCode = "404", description = "No categories were found.")
     public ResponseEntity<List<Category>> getAll() {
         return categoryService.getAll()
                 .filter(purchases -> !purchases.isEmpty())
@@ -41,10 +38,8 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     @Operation(description = "Get a category by category ID.", security = { @SecurityRequirement(name = "JWT") })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK."),
-            @ApiResponse(responseCode = "404", description = "Category not found.")
-    })
+    @ApiResponse(responseCode = "200", description = "OK.")
+    @ApiResponse(responseCode = "404", description = "Category not found.")
     public ResponseEntity<Category> getCategory(@Parameter(description = "The ID of the category.",
                                                     required = true, example = "1")@PathVariable("id") int categoryId) {
         return categoryService.getCategory(categoryId)
@@ -54,10 +49,8 @@ public class CategoryController {
 
     @GetMapping("/name/{name}")
     @Operation(description = "Get categories by similar category name", security = { @SecurityRequirement(name = "JWT") })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK."),
-            @ApiResponse(responseCode = "404", description = "No categories were found.")
-    })
+    @ApiResponse(responseCode = "200", description = "OK.")
+    @ApiResponse(responseCode = "404", description = "No categories were found.")
     public ResponseEntity<List<Category>> getCategoryByName(@Parameter(description = "The name of the category to search.",
                                             required = true, example = "Verdura") @PathVariable("name") String name) {
         return categoryService.getCategoryByName(name)
@@ -68,9 +61,7 @@ public class CategoryController {
 
     @PostMapping("/save")
     @Operation(description = "Save a category.", security = { @SecurityRequirement(name = "JWT") })
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Category successfully created.")
-    })
+    @ApiResponse(responseCode = "201", description = "Category successfully created.")
     public ResponseEntity<Category> save(@Parameter(description = "The category must include a name and a status.")
                                              @RequestBody Category category) {
         return new ResponseEntity<>(categoryService.save(category), HttpStatus.CREATED);
@@ -78,10 +69,8 @@ public class CategoryController {
 
     @DeleteMapping("/delete/{id}")
     @Operation(description = "Delete a category by category ID.", security = { @SecurityRequirement(name = "JWT") })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK."),
-            @ApiResponse(responseCode = "404", description = "No category found.")
-    })
+    @ApiResponse(responseCode = "200", description = "OK.")
+    @ApiResponse(responseCode = "404", description = "No category found.")
     public ResponseEntity delete(@Parameter(description = "The ID of the category.", required = true, example = "1")
                                      @PathVariable("id") int categoryId) {
         return new ResponseEntity(categoryService.delete(categoryId), HttpStatus.OK);
@@ -89,10 +78,8 @@ public class CategoryController {
 
     @PostMapping("/togglestatus/{id}")
     @Operation(description = "Toggle a category's status.", security = { @SecurityRequirement(name = "JWT") })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK."),
-            @ApiResponse(responseCode = "404", description = "No category found.")
-    })
+    @ApiResponse(responseCode = "200", description = "OK.")
+    @ApiResponse(responseCode = "404", description = "No category found.")
     public ResponseEntity<Boolean> toggleStatus(@Parameter(description = "The ID of the category to toggle it's state.",
                                                 required = true, example = "1")@PathVariable("id") int categoryId) {
         Optional<Category> category = categoryService.getCategory(categoryId);
